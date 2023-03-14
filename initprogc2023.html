@@ -10,6 +10,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 	</head>
 	<body class="is-preload">
 		<div id="page-wrapper">
@@ -69,8 +71,54 @@
 
 							<!-- Content -->
 
+							<header>
+								<h2>Ressources Supplémentaires en Init Prog C</h2>
+							</header>
 								<article>
-                                    Page en cours de construction ...
+								<h1> Les "Règles d'or"</h1>
+								<i>Ou comment éviter de faire exploser des fusées ou des centrales nucléaires.</i>
+									<li>
+										<strong>Règle n°1</strong> : Une <strong>variable</strong> = un <strong>type</strong> + une <strong>adresse</strong> + une <strong>valeur</strong> </li>
+										<li><strong>Règle n°2</strong> : type = zone mémoire + interprétation</li>
+										&#128161; Je suis quelqu'un d'élégant, donc j'initialise toujours mes variables, comme ça je sais ce qu'il y a dedans. Si je ne sais pas avec quoi l'initialiser, c'est généralement mauvais signe ... (cf erreurs classique) 
+									</br>
+									<li><strong>Règle n°3</strong> : La durée de vie d'une variable = durée de vie du block où elle a été <u>déclarée</u> (c'est à dire les { } dans lesquels elle a été déclarée)</li>
+								<li><strong>Règle n°4</strong> - Masquage : une variable plus locale "masque" une variable plus globale <u>de même nom</u></li>
+								&#128161; Je suis quelqu'un d'élégant, donc je nomme toujours mes variables avec des nom <u>différents</u> et <u>qui ont un sens</u>. Pour débuter, une bonne règle est "plus le nom est long, mieux c'est"
+								<li><strong>Règle n°5</strong> : Il faut <u>toujours</u> <u>toujours</u> <u>toujours</u> tester si une référence n e vaut pas <code>NULL</code> avant de la déréférencer à l'aide de l'opérateur <code>*</code>.</li>
+								&#128161; Je suis quelqu'un d'élégant, donc je nomme mes références avec un <code>p</code> ou un <code>p_</code> devant mes variables. Par exemple :</br>
+								<code>int a = 0; </br> int *p_a = &(a)</code> 
+
+								</details>
+								</article>
+
+								<article>
+									<br>
+								<h1>Les erreurs "classiques"</h1>
+								<details><summary>J'affiche les éléments d'un tableau mais ça ne renvoit pas les bonnes valeurs</summary>
+									<li>&#9888; Attention à la <i>chaîne de formattage</i> : si je veux afficher les éléments d'un tableau contenant que des entiers non-signés, il faut que j'affiche avec l'option "%u".</li>
+									<li>Par exemple : <code>printf("tab[i] = %u", tab[i]);</code></li>
+								</details>
+								<br>
+								<details><summary>Je veux mettre un tableau en argument d'une fonction</summary>
+									Je veux mettre le tableau d'entier <code>tab</code> en argument de la fonction <code>toto</code>. J'ai écrit <code>void toto(int *tab[])</code>, mais ça me renvoie une erreur. Que se passe-t-il ?
+									<li>Pour passer un tableau en argument d'une fonction, la syntaxe est <code>type nom[]</code>. Il n'y a pas besoin du <code>*</code>.
+									</li>
+									<li>Dans le cas où je met le <code>*</code>, je crée un tableau de <u>références vers int</u> : ce n'est en <i>général</i> pas ce que l'on veut ici ...</li>
+								</details>
+								<br>
+								<details><summary>J'utilise des pointeurs et la compilation me renvoit une <code>Segmentation fault</code> (ou <code>segv</code> pour les intimes)</summary>
+									<li>Avez-vous pensé à tester si les pointeurs valent <code>NULL</code> ? (cf Règle n°5)</li>
+								</details>
+								</article>
+
+								<article>
+									<br>
+									<h1> <code>*</code> ou <code>&</code> ? </h1>
+									Les opérations sur les références (ou pointeurs) sont parfois difficile à maîtriser lors du premier contact avec ces notions. Voici un petit <i>flowchart</i> qui vous indique quel symbole utiliser : 
+										<span class="image featured"><img src="media/figures/initprogc1.svg" alt="" width="400" 
+											height="500" /></span>
+									</details>
 								</article>
 
 						</div>
