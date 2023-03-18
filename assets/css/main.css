@@ -173,6 +173,20 @@ input, select, textarea {
 		font-size: 100%;
 	  }
 
+pre {
+  background-color: #f4f4f4;
+  color: #1e0a02db;
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  padding: 10px;
+  white-space: pre-wrap;
+  font-size: 100%;
+
+}
+
+
 	sup {
 		font-size: 0.8em;
 		position: relative;
@@ -2183,12 +2197,15 @@ input, select, textarea {
 
 		ol li {
 			padding-left: 0.25em;
+			margin-bottom: 30px; /* Increase the bottom margin */
 
 		}
 
 	ul {
 		list-style: disc;
 		padding-left: 1em;
+		margin-bottom: 30px; /* Increase the bottom margin */
+
 	}
 
 		ul li {
