@@ -84,20 +84,29 @@
 									<li><strong>Règle n°1</strong> : Une <strong>variable</strong> = un <strong>type</strong> + une <strong>adresse</strong> + une <strong>valeur</strong> </li>
 										<li><strong>Règle n°2</strong> : type = zone mémoire + interprétation</li>
 										<blockquote>
-										&#128161; Je suis quelqu'un d'élégant, donc j'initialise toujours mes variables, comme ça je sais ce qu'il y a dedans. Si je ne sais pas avec quoi l'initialiser, c'est généralement mauvais signe ... (cf erreurs classique). 
+										&#128161; Je suis une personne élégante, donc j'initialise toujours mes variables, comme ça je sais ce qu'il y a dedans. Si je ne sais pas avec quoi l'initialiser, c'est généralement mauvais signe ... (cf erreurs classique). 
 									</blockquote>
 									</br>
 									<li><strong>Règle n°3</strong> : La durée de vie d'une variable = durée de vie du block où elle a été <u>déclarée</u> (c'est à dire les { } dans lesquels elle a été déclarée).</li>
 								<li><strong>Règle n°4</strong> - Masquage : une variable plus locale "masque" une variable plus globale <u>de même nom.</u></li>
 								<blockquote>
-								&#128161; Je suis quelqu'un d'élégant, donc je nomme toujours mes variables avec des nom <u>différents</u> et <u>qui ont un sens</u>. Pour débuter, une bonne règle est "plus le nom est long, mieux c'est"
+								&#128161; Je suis une personne élégante, donc je nomme toujours mes variables avec des noms <u>différents</u> et <u>qui ont un sens</u>. Pour débuter, une bonne règle est "plus le nom est long, mieux c'est"
 								</blockquote>
-								<li><strong>Règle n°5</strong> : Il faut <u>toujours</u> <u>toujours</u> <u>toujours</u> tester si une référence n e vaut pas <code>NULL</code> avant de la déréférencer à l'aide de l'opérateur <code>*</code>.</li>
+								<li><strong>Règle n°5</strong> : Il faut <u>toujours</u> <u>toujours</u> <u>toujours</u> tester si une référence ne vaut pas <code>NULL</code> avant de la déréférencer à l'aide de l'opérateur <code>*</code>.</li>
 								<blockquote>
-								&#128161; Je suis quelqu'un d'élégant, donc je nomme mes références avec un <code>p</code> ou un <code>p_</code> devant mes variables. <br>Par exemple :</br>
+								&#128161; Je suis une personne élégante, donc je nomme mes références avec un <code>p</code> ou un <code>p_</code> devant mes variables. <br>Par exemple :</br>
 <pre>int a = 0; 
 int *p_a = &(a);</pre>
 </blockquote>
+								<blockquote>
+									&#127381; &#128161; Je suis une personne élégante, donc si mon pointeur pointe vers <code>NULL</code>, j'affiche une erreur sur <code>stderr</code> et j'arrête <u>immédiatement</u> le code : </br>
+<pre>
+if (p_a == NULL){
+	fprintf(stderr, "p_a est null !\n");
+	exit(EXIT_FAILURE);
+}
+</pre> 
+								</blockquote>
 								</ul>
 								</details>
 								</article>
@@ -105,14 +114,16 @@ int *p_a = &(a);</pre>
 								<article>
 									<br>
 								<h1>Les erreurs "classiques"</h1>
-								<details><summary>J'affiche les éléments d'un tableau mais ça ne renvoit pas les bonnes valeurs</summary>
+								<ul>
+								<li>J'affiche les éléments d'un tableau mais ça n'affiche pas les valeurs attendues.</li>
+								<details><summary>Plus de détails</summary>
 									<ul>
 									<li>&#9888; Attention à la <i>chaîne de formattage</i> : si je veux afficher les éléments d'un tableau contenant que des entiers non-signés, il faut que j'affiche avec l'option "%u".</li>
 									<li>Par exemple : <code>printf("tab[i] = %u", tab[i]);</code></li>
 									</ul>
 								</details>
-								<br>
-								<details><summary>Je veux mettre un tableau en argument d'une fonction</summary>
+								<li>Je veux mettre un tableau en argument d'une fonction.</li>
+								<details><summary>Plus de détails</summary>
 									Je veux mettre le tableau d'entier <code>tab</code> en argument de la fonction <code>toto</code>. J'ai écrit <code>void toto(int *tab[])</code>, mais ça me renvoie une erreur. Que se passe-t-il ?
 									<ul>
 									<li>Pour passer un tableau en argument d'une fonction, la syntaxe est <code>type nom[]</code>. Il n'y a pas besoin du <code>*</code>.
@@ -120,12 +131,64 @@ int *p_a = &(a);</pre>
 									<li>Dans le cas où je met le <code>*</code>, je crée un tableau de <u>références vers int</u> : ce n'est en <i>général</i> pas ce que l'on veut ici ...</li>
 									</ul>
 								</details>
-								<br>
-								<details><summary>J'utilise des pointeurs et la compilation me renvoit une <code>Segmentation fault</code> (ou <code>segv</code> pour les intimes)</summary>
+								<li>J'utilise des pointeurs et la compilation me renvoit une <code>Segmentation fault</code> (ou <code>segv</code> pour les intimes)</li>
+								<details><summary>Plus de détails</summary>
 									<ul>
 									<li>Avez-vous pensé à tester si les pointeurs valent <code>NULL</code> ? (cf Règle n°5)</li>
 									</ul>
 								</details>
+								<li>&#127381; J'ai testé si le pointeur était <code>NULL</code>, mais j'ai encore des erreurs<code>segv</code>.</li>
+								<details><summary>Plus de détails</summary>
+									<ul>
+									<li> Quelques fois, le déréférencement peut être "caché" dans une autre structure. </li>
+									<li>Prenons l'exemple de la fonction suivante qui cherche si le caractère <code>c</code> est dans la chaîne de caractère <code>chaineCaracteres</code> : 
+<pre>
+bool chercheCaractere(char *p_char, char c){
+	int i = 0; 
+	for (i=0; *(p_char+i) != '\0'; i = i+1)
+	{
+		if (p_char+i == NULL){ 
+			fprintf(stderr, "pointeur NULL !\n");
+			exit(EXIT_FAILURE);}
+		else{
+			if (*(p_char+i) == c) {
+				return true ;}
+		}
+	}
+	return false;
+}
+</pre>								
+									Il semble que nous ayions bien testé que <code>p_char+i</code> ne soit pas <code>NULL</code> à la 5ème ligne. 
+									Cependant, ce code produira malgré tout une erreur s'il est appelé sur une chaîne de caractères vide <code>chercheCaractere(NULL, 'a')</code>. 
+									<li>&#9888; Il y a ici un déréférencement que nous n'avons pas testé dans la boucle <code>for</code> : <br> <code>*(p_char+i) != '\0'</code></li>
+									<li> Pour éviter toute erreur, on peut ajouter une condition à la boucle for : </li>
+<pre>
+...
+for (i=0; <code>p_char+i != NULL || </code>*(p_char+i) != '\0'; i = i+1)
+... 
+</pre>
+									<li> On peut ensuite, après l'arrêt de la boucle, vérifier si <code>p_char+i</code> vaut <code>NULL</code> : </li>
+<pre>
+...
+
+... 
+
+bool chercheCaractere(char *p_char, char c){
+	int i = 0; 
+	for (i=0; <code>p_char+i != NULL || </code>*(p_char+i) != '\0'; i = i+1)
+	{
+		if (*(p_char+i) == c) {
+			return true ;}
+	}
+	<code>if (p_char+i == NULL){ 
+		fprintf(stderr, "pointeur NULL !\n");
+		exit(EXIT_FAILURE);}</code>
+	else return false;
+}
+</pre>
+									</ul>
+								</details>
+								</ul>
 								</article>
 
 								<article>
