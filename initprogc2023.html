@@ -72,10 +72,10 @@
 							<!-- Content -->
 
 							<header>
-								<h2>Ressources Supplémentaires en Init Prog C</h2>
+								<h3>Ressources Supplémentaires en Init Prog C</h3>
 							</header>
 								<article>
-								<h1> Les "Règles d'or"</h1>
+								<h2> Les "Règles d'or"</h2>
 								<i>Ou comment éviter de faire exploser des fusées ou des centrales nucléaires.</i>
 								<ul>
 
@@ -99,7 +99,7 @@
 int *p_a = &(a);</pre>
 </blockquote>
 								<blockquote>
-									&#127381; &#128161; Je suis une personne élégante, donc si mon pointeur pointe vers <code>NULL</code>, j'affiche une erreur sur <code>stderr</code> et j'arrête <u>immédiatement</u> le code : </br>
+									 &#128161; Je suis une personne élégante, donc si mon pointeur pointe vers <code>NULL</code>, j'affiche une erreur sur <code>stderr</code> et j'arrête <u>immédiatement</u> le code : </br>
 <pre>
 if (p_a == NULL){
 	fprintf(stderr, "p_a est null !\n");
@@ -108,12 +108,12 @@ if (p_a == NULL){
 </pre> 
 								</blockquote>
 								</ul>
-								</details>
+								<li><strong>&#127381; Règle n°6</strong> : On ne fait <u>jamais</u> <u>jamais</u> <u>jamais</u> d'opérations sur les structures elles-même, mais uniquement sur leurs champs. Si on veut comparer deux structures (par ex. pour vérifier si elles sont égales), on doit les comparer champ par champ. 
 								</article>
 
 								<article>
 									<br>
-								<h1>Les erreurs "classiques"</h1>
+								<h2>Les erreurs "classiques"</h2>
 								<ul>
 								<li>J'affiche les éléments d'un tableau mais ça n'affiche pas les valeurs attendues.</li>
 								<details><summary>Plus de détails</summary>
@@ -137,7 +137,7 @@ if (p_a == NULL){
 									<li>Avez-vous pensé à tester si les pointeurs valent <code>NULL</code> ? (cf Règle n°5)</li>
 									</ul>
 								</details>
-								<li>&#127381; J'ai testé si le pointeur était <code>NULL</code>, mais j'ai encore des erreurs<code>segv</code>.</li>
+								<li> J'ai testé si le pointeur était <code>NULL</code>, mais j'ai encore des erreurs<code>segv</code>.</li>
 								<details><summary>Plus de détails</summary>
 									<ul>
 									<li> Quelques fois, le déréférencement peut être "caché" dans une autre structure. </li>
@@ -193,11 +193,147 @@ bool chercheCaractere(char *p_char, char c){
 
 								<article>
 									<br>
-									<h1> <code>*</code> ou <code>&</code> ? </h1>
+									<h2> <code>*</code> ou <code>&</code> ? </h2>
 									Les opérations sur les références (ou pointeurs) sont parfois difficile à maîtriser lors du premier contact avec ces notions. Voici un petit <i>flowchart</i> qui vous indique quel symbole utiliser : 
 										<span class="image featured"><img src="media/figures/initprogc1.svg" alt="" width="400" 
 											height="500" /></span>
 									</details>
+								</article>
+
+								<article>
+									<br>
+									<h2>&#127381; Structures et pointeurs vers structure</h2>
+
+									<h1>A quoi sert une structure ?</h1>
+									<details><summary>Dérouler</summary>
+										Imaginons que l'on souhaite constituer une bibliothèque. Chaque livre aura les mêmes caractéristiques : un titre, un auteur, une année de publication. Comment stocker ces informations ? Un tableau nous imposerai de tout stocker avec le même type (ici des <code>str</code>), mais c'est assez peu pratique quand on veut ensuite faire des opérations sur ces champs. La solution ? Les <em>structures</em>.
+									</details>
+									<h1>Comment déclarer une nouvelles structure ?</h1>
+									<details><summary>Dérouler</summary>
+									Déclarer une structure, c'est déclarer un <em>nouveau type</em>, qui est ensuite utilisable comme tous les types que l'on connaît déjà (<code>int</code>, <code>char</code>, etc.). Par exemple : 
+<pre>
+struct livre{
+	str titre; 
+	str auteur;
+	int annee;
+};
+</pre>
+								&#9888; le point virgule après la déclaration de la structure est <u>obligatoire</u>.<br>
+								Que fait le code ci-dessus ? Il 
+								<ul>
+									<li>déclare un nouveau type <code>struct livre</code></li>
+									<li>qui possède trois <em>champs</em> : un champ <code>titre</code>, de type <code>str</code>, un champ <code>auteur</code>, de type <code>str</code>, et un champ <code>année</code>, de type <code>int</code></li>
+								</ul>
+								</details>
+									<h1>Comment créer une nouvelle variable de type structure ?</h1>
+									<details><summary>Dérouler</summary>
+									Si l'on reprend notre exemple précécent, et que l'on veut déclarer et initialiser deux livres, voici la marche à suivre : 
+									<ol>
+										<li>
+											On définit le type <code>struct livre</code> selon les lignes précédentes en entête de programme (cf. 'Où placer la déclaration de la structure ?').
+										</li>
+										<li>
+											On déclare une nouvelle variable du type désiré -- ici <code>struct livre</code> <br> &#9888; le type est <code><u>struct</u> livre</code> et pas <code>livre</code> tout seul. Pour voir comment éviter d'avoir à écrire le <code>struct</code> à chaque fois, cf <code>typedef</code>. 
+										</li>
+<pre>
+struct livre nana ;
+</pre>
+									<li>On initialise chacun de ses champs un par un, grâce à l'opérateur <code>.</code> : </li>
+<pre>
+nana.titre = "Nana" ;
+nana.titre = "Zola" ;
+nana.annee =  1880;
+</pre><br>			
+Et voilà pour le premier !
+									<li>On fait de même pour toutes les variables de type <code>struct livre</code> que l'on souhaite instancier. Par exemple, pour Germinal de Zola, 1885 : </li>
+<pre>
+struct livre germinal ;
+germinal.titre = "Germinal" ;
+germinal.titre = "Zola" ;
+germinal.annee =  1885;
+</pre><br>		
+									</ol>
+									<blockquote>
+										&#128161; Il est possible d'initialiser tous les champs en une seule ligne, avec la syntaxe suivante : 
+<pre>
+struct livre germinal = {"Germinal", "Zola", 1885} ;
+</pre><br>
+Je déconseille cette pratique dans un premier temps puisqu'elle est plus susceptible de générer des erreurs (inversion de paramètres par exemple), et une éventuelle erreur pointera sur l'unique ligne, rendant le bug d'autant plus diffile à trouver qu'il y a de champs dans la structure (contrairement à l'approche 'un champ=une ligne', permettant de trouver l'erreur instantanément)
+									</blockquote>
+									</details>
+									<h1>Où placer la déclaration de la structure ?</h1>
+									<details><summary>Dérouler</summary>
+									Dans le main ? Dans une fonction ? Ni l'un ni l'autre ! La définition d'une structure est comme la définition d'un nouveau type, et on a donc interêt à ce que tous les éléments du code en bénéficie. Il doit donc se placer <u>dans l'entête du code</u>, après les <code>#include</code> et autres <code>DEFINE</code>. <br> Le <code>typedef</code> doit se placer après la structure (logique), toujours dans l'entête du code. 
+									<blockquote>
+										&#128161; Plus tard, quand nous aurons appris à compiler nous-mêmes, nous pourrons être élégants et mettre les définitions des structures dans un fichier dédié, permettant de partager le nouveau type à tous les fichiers d'un même programme ! 
+									</blockquote>
+									</details>
+									<h1>Marre de devoir taper <code>struct machin</code> à chaque fois ? <code>typedef</code> est là pour ça ! </h1>
+									<details><summary>Dérouler</summary>
+									Arriver un moment, ça va bien de toujours taper <code>struct</code> devant le nom de notre structure, mais c'est un peu long pour pas grand chose ... <br> On peut alors utiliser le mot clé <code>typedef</code> à la fin de l'entête du programme pour mettre des <em>alias</em> (des surnoms) aux types existants. <br> On peut ainsi changer notre précédent type <code>struct livre</code> en <code>un_livre</code> avec le code suivant : 
+<pre>
+struct livre{ // déja dans le code normalement
+	str titre; 
+	str auteur;
+	int annee;
+}; 
+typedef struct livre un_livre
+</pre><br>	
+Notez l'abscence de point-virgule à la fin de la commande : <code>typedef</code> fonctionne comme <code>DEFINE</code>, les alias seront remplacé par leur valeur lors de la précompilation. 	
+<blockquote>
+	&#128161; <code>typedef</code> fonctionne aussi pour les types qui existe déjà. Flemme de taper <code>unsigned int</code> en entier ? 
+<pre>
+typedef unsigned int uint
+</pre><br>
+Et le tour est joué ! Maintenant, <code>uint</code> est strictement équivalent à <code>unsigned int</code> !
+</blockquote>							
+									</details>
+									<h1>Quelles opérations peut-on faire sur les structures ?</h1>
+									<details><summary>Dérouler</summary>
+									<u><strong>AUCUNE</strong></u>,<u><strong>AUCUNE</strong></u>,<u><strong>AUCUNE</strong></u> !  <br>Les opérations ne se font pas sur les structures, mais sur leur champs ! Ceci était un test, et vous venez d'échouer. Retournez en règle d'or n°6. 
+								</details>
+									<h1>Passage par valeur ou par adresse ?</h1>
+									Imaginons que l'on ait une structure <code>s</code> très volumineuse (quelques Go) de type <code>struct struct_volumineuse</code>, et que l'on veuille mettre à jout la valeur d'un champ (mettons, le champ <code>toto</code>) grâce à une fonction <code>update_toto </code>. <br> Une première façon de faire est de passer la structure en argument et de la renvoyer dans la fonction : 
+<pre>
+struct struct_volumineuse update_toto(struct struct_volumineuse s){
+	s.toto = s.toto + 1 ;
+	return s ;
+}
+
+int main(){
+	struct struct_volumineuse s ; 
+	s.toto = 0
+	s = update_toto(s);
+	return EXIT_SUCCESS;
+}
+</pre>
+L'écriture est relativement simple, mais le coût mémoire et temporel est très important : non seulement on crée une copie de la structure en la passant en argument par valeur (bon courage pour la RAM), mais en plus on doit à la fin du programme recopier toutes les valeurs de la structure interne à la fonction dans celle définie dans le <code>main</code>. <br> La solution ? Le passage par référence.
+									<h1>Passage par référence</h1>
+									L'écriture avec un passage par référence est très similaire au code précédent, sauf qu'au lieu de passer en argument et de renvoyer une structure (ce qui est l'opération coûteuse), on passe en argument une référence vers la structure à modifier, que l'on modifie directement en mémoire. En reprenant l'exemple précédent : 
+<pre>
+void update_toto(struct struct_volumineuse *p_s){
+	if (s == NULL){
+		fprinf("Pointeur nul") ; 
+		exit(EXIT_FAILURE)
+	}
+	*(p_s).toto = *(p_s).toto + 1 ;
+}
+
+int main(){
+	struct struct_volumineuse s ; 
+	s.toto = 0
+	update_toto(&s);
+	return EXIT_SUCESS;
+}
+</pre>
+On ainsi modifié le prototype de la fonction <code>update_toto</code> pour 
+<ol>
+	<li> Qu'elle ne revoie rien : on travaille directement sur la structure en mémoire</li>
+	<li> Qu'elle prenne en argument un pointeur vers la structure, de type <code>struct struct_volumineuse *</code></li>
+</ol>
+</details>
+									<h1>Opérateur <code>-></code></h1>
+									<i>à venir ...</i>
 								</article>
 						</div>
 					</div>
