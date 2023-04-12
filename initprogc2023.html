@@ -293,6 +293,7 @@ Et le tour est joué ! Maintenant, <code>uint</code> est strictement équivalent
 									<u><strong>AUCUNE</strong></u>,<u><strong>AUCUNE</strong></u>,<u><strong>AUCUNE</strong></u> !  <br>Les opérations ne se font pas sur les structures, mais sur leur champs ! Ceci était un test, et vous venez d'échouer. Retournez en règle d'or n°6. 
 								</details>
 									<h1>Passage par valeur ou par adresse ?</h1>
+									<details><summary>Développer</summary>
 									Imaginons que l'on ait une structure <code>s</code> très volumineuse (quelques Go) de type <code>struct struct_volumineuse</code>, et que l'on veuille mettre à jout la valeur d'un champ (mettons, le champ <code>toto</code>) grâce à une fonction <code>update_toto </code>. <br> Une première façon de faire est de passer la structure en argument et de la renvoyer dans la fonction : 
 <pre>
 struct struct_volumineuse update_toto(struct struct_volumineuse s){
@@ -333,7 +334,21 @@ On ainsi modifié le prototype de la fonction <code>update_toto</code> pour
 </ol>
 </details>
 									<h1>Opérateur <code>-></code></h1>
-									<i>à venir ...</i>
+									<details><summary>Développer</summary>
+										Il existe un opérateur équivalent au déréférencement puis à l'accès à un champ d'une structure. Par exemple, les deux lignes suivantes sont strictement équivalentes : 
+<pre>
+*(p_s).toto = 1 ;
+p_s -> toto = 1 ;
+</pre><br>
+									<blockquote>
+										&#128161; A moins que l'inverse ne soit spécifié (ou nécessaire pour obtenir 100/100 sur VPL), la notation <code>*(p_s).toto</code> est recommandée car 
+										<ol>
+											<li>Elle utilise l'opérateur <code>*()</code>, pour lequel on a <u>toujours</u> le réflexe de tester si le pointeur passé en argument est différent de <code>NULL</code> (cf règle d'or n°5).</li>
+											<li>Elle permet de suivre, à l'aide du schéma de la RAM sur une feuille, les différentes opérations effectuées.</li>
+										</ol>
+									
+									</blockquote>	
+									</details>
 								</article>
 						</div>
 					</div>
